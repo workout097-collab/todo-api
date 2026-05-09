@@ -1,6 +1,6 @@
-# TODO API
+# VTaskForge API
 
-Backend API for task management built with FastAPI.
+Production-ready backend API for task management built with FastAPI, PostgreSQL and JWT authentication.
 
 ## Features
 
@@ -10,21 +10,25 @@ Backend API for task management built with FastAPI.
 - Create tasks
 - Get tasks
 - Delete tasks
-- SQLite database
+- PostgreSQL database
 - SQLAlchemy ORM
 
 ## Tech Stack
 
 - FastAPI
-- Python
+- PostgreSQL
 - SQLAlchemy
-- SQLite
-- JWT Authentication
+- JWT
+- Pydantic
 - Uvicorn
 
-## Run Project
-
-Install dependencies:
+## Run locally
 
 ```bash
 pip install -r requirements.txt
+uvicorn main:app --reload
+```
+## Author
+
+Built by Vasyl
+

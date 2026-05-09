@@ -1,18 +1,29 @@
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from models.user import User, UserCreate, UserLogin
 from database import SessionLocal
+
+from models.user import User
+
+from schemas.user import (
+    UserCreate,
+    UserResponse,
+    UserLogin,
+    UserProfileResponse
+)
+from security import (
+    verify_password,
+    create_access_token,
+    get_current_user,
+    hash_password
+)
+
 from fastapi import APIRouter, status
-from security import (verify_password,create_access_token)
-from fastapi import Depends
-from models.user import UserProfileResponse
 
-
-from security import get_current_user
-
-from security import hash_password
-
-router = APIRouter()
+router = APIRouter(
+    prefix="/users",
+    tags=["/Users"]
+)
 
 @router.get(
     '/profile',
@@ -61,7 +72,7 @@ def login(user_data: OAuth2PasswordRequestForm = Depends()):
 
 
 
-@router.post('/users')
+@router.post("/",response_model=UserResponse, tags=["Users"])
 def add_users(user: UserCreate):
     db = SessionLocal()
 
@@ -76,12 +87,14 @@ def add_users(user: UserCreate):
 
     db.commit()
 
+
+
     db.refresh(new_user)
 
     db.close()
     return new_user
 
-@router.get('/users/{user_id}')
+@router.get('/',response_model=UserResponse)
 def get_user(user_id: int):
 
     db = SessionLocal()
@@ -97,7 +110,7 @@ def get_user(user_id: int):
     return user
 
 
-@router.delete('/users/{user_id}')
+@router.delete('/{user_id}')
 def deleted_user(user_id: int):
 
     db = SessionLocal()
@@ -117,7 +130,7 @@ def deleted_user(user_id: int):
     return  {'message': 'User deleted'}, status.HTTP_200_OK
 
 
-@router.put('/users/{user_id}')
+@router.put('/{user_id}', response_model=UserResponse)
 def update_user(user_id: int, user_data: UserCreate):
 
     db = SessionLocal()
@@ -140,7 +153,7 @@ def update_user(user_id: int, user_data: UserCreate):
     return user
 
 
-@router.get('/users/')
+@router.get('/users/',response_model=list[UserResponse])
 def get_users():
 
     db = SessionLocal()

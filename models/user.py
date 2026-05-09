@@ -1,9 +1,6 @@
-from pydantic import BaseModel
-
 from database import Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-
 
 
 class User(Base):
@@ -16,27 +13,3 @@ class User(Base):
     password = Column(String)
 
     tasks = relationship("Task", back_populates="owner")
-
-class  UserCreate(BaseModel):
-    first_name: str
-    last_name: str
-    email: str
-    password: str
-
-class UserLogin(BaseModel):
-    email: str
-    password: str
-
-class UserTaskResponse(BaseModel):
-    id: int
-    title: str
-
-    class Config:
-        from_attributes = True
-class UserProfileResponse(BaseModel):
-            id: int
-            email: str
-            tasks: list[UserTaskResponse]
-
-class Config:
-      from_attributes = True

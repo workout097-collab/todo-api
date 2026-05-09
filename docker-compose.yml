@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres
+    container_name: taskforge-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskforge
+    ports:
+      - "5432:5432"
+
+  api:
+    build: .
+    container_name: taskforge-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

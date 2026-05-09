@@ -1,11 +1,20 @@
 from fastapi import FastAPI
+
 from routes import users
 from routes import tasks
-app = FastAPI()
 
-from database import Base
-from database import engine
+from database import Base, engine
+
+from models.user import User
 from models.task import Task
+
+
+app = FastAPI(
+    title="VTaskForge API",
+    description="Production-ready task management backend built with FastAPI, JWT authentication, PostgreSQL",
+    version="1.0.0"
+)
+
 Base.metadata.create_all(bind=engine)
 
 app.include_router(users.router)
